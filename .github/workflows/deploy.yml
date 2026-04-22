@@ -31,13 +31,17 @@ jobs:
     - name: Build NPM Assets
       run: npm run build
 
-    - name: Synchronize Files To Server 2
+    - name: Debug SSH key
+      run: |
+        echo "$SSH_PRIVATE_KEY" | head -n 1
+
+    - name: Synchronize Files To Server
       uses: easingthemes/ssh-deploy@v2.1.5
-      env:
+      with:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SOURCE: "."
         REMOTE_HOST: ${{ secrets.VPS_HOST }}
         REMOTE_USER: ${{ secrets.VPS_USER }}
+        SOURCE: "."
         TARGET: "/var/www/entrena.dev"
 
     - name: Run Remote/Artisan Commands
