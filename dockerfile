@@ -23,9 +23,6 @@ FROM node:20-alpine AS frontend
 
 WORKDIR /app
 
-# ⚠️ Wayfinder NO se ejecuta en CI
-ENV CI=true
-
 COPY package.json package-lock.json ./
 RUN npm ci
 
