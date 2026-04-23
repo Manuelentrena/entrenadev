@@ -18,9 +18,9 @@ COPY . .
 
 
 # =========================
-# 2. FRONTEND (PHP + NODE + WAYFINDER)
+# 2. BUILD (PHP + NODE + WAYFINDER + VITE)
 # =========================
-FROM php:8.4-cli-alpine AS frontend
+FROM php:8.4-cli-alpine AS build
 
 WORKDIR /app
 
@@ -32,13 +32,16 @@ RUN apk add --no-cache \
     npm \
     libzip-dev
 
+# PHP extensiones mínimas para artisan
+RUN docker-php-ext-install zip
+
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
 
-# Wayfinder
+# 🔥 Wayfinder (requiere PHP aquí)
 RUN php artisan wayfinder:generate --with-form
 
-# Frontend build
+# frontend build
 RUN npm ci
 RUN npm run build
 
@@ -71,7 +74,7 @@ RUN docker-php-ext-install \
     xml \
     opcache
 
-# Opcache optimizado
+# Opcache
 RUN { \
     echo "opcache.enable=1"; \
     echo "opcache.enable_cli=1"; \
@@ -85,14 +88,10 @@ RUN { \
 # =========================
 COPY . .
 
-# vendor
 COPY --from=vendor /app/vendor ./vendor
+COPY --from=build /app/resources/js/routes ./resources/js/routes
+COPY --from=build /app/public/build ./public/build
 
-# rutas generadas por Wayfinder
-COPY --from=artisan /app/resources/js/routes ./resources/js/routes
-
-# build frontend
-COPY --from=frontend /app/public/build ./public/build
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
