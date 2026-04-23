@@ -6,6 +6,7 @@ FROM composer:2 AS vendor
 WORKDIR /app
 
 COPY composer.json composer.lock ./
+
 RUN composer install \
     --no-dev \
     --prefer-dist \
@@ -13,19 +14,20 @@ RUN composer install \
     --no-scripts \
     --no-progress
 
+COPY . .
 
 # =========================
 # 2. FRONTEND (NODE + VITE)
 # =========================
-FROM php:8.3-cli-alpine AS frontend
+FROM node:20-alpine AS frontend
 
 WORKDIR /app
 
-# Instalar Node
-RUN apk add --no-cache nodejs npm
+# ⚠️ Wayfinder NO se ejecuta en CI
+ENV CI=true
 
 COPY package.json package-lock.json ./
-RUN npm ci --include=optional
+RUN npm ci
 
 COPY . .
 
@@ -38,7 +40,6 @@ FROM php:8.3-fpm-alpine
 
 WORKDIR /var/www/html
 
-# 🔧 Dependencias del sistema
 RUN apk add --no-cache \
     bash \
     git \
@@ -50,7 +51,6 @@ RUN apk add --no-cache \
     libxml2-dev \
     curl
 
-# 🔧 Extensiones PHP necesarias para Laravel
 RUN docker-php-ext-install \
     pdo \
     pdo_pgsql \
@@ -61,7 +61,7 @@ RUN docker-php-ext-install \
     xml \
     opcache
 
-# ⚡ OPCACHE optimizado
+# Opcache optimizado
 RUN { \
     echo "opcache.enable=1"; \
     echo "opcache.enable_cli=1"; \
@@ -69,16 +69,15 @@ RUN { \
     echo "opcache.jit=tracing"; \
 } > /usr/local/etc/php/conf.d/opcache.ini
 
-# 📂 Copiamos app
+# App
 COPY . .
 
-# 📦 Copiamos vendor ya construido
+# vendor
 COPY --from=vendor /app/vendor ./vendor
 
-# 🎨 Copiamos assets compilados (Vite)
+# build de Vite
 COPY --from=frontend /app/public/build ./public/build
 
-# 🔐 Permisos correctos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
