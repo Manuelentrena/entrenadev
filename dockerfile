@@ -17,9 +17,12 @@ RUN composer install \
 # =========================
 # 2. FRONTEND (NODE + VITE)
 # =========================
-FROM node:20-alpine AS frontend
+FROM php:8.3-cli-alpine AS frontend
 
 WORKDIR /app
+
+# Instalar Node
+RUN apk add --no-cache nodejs npm
 
 COPY package.json package-lock.json ./
 RUN npm ci --include=optional
@@ -27,7 +30,6 @@ RUN npm ci --include=optional
 COPY . .
 
 RUN npm run build
-
 
 # =========================
 # 3. APP FINAL (PHP-FPM)
