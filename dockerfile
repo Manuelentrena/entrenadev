@@ -16,8 +16,29 @@ RUN composer install \
 
 COPY . .
 
+
 # =========================
-# 2. FRONTEND (NODE + VITE)
+# 2. PHP CLI (WAYFINDER GENERATION)
+# =========================
+FROM php:8.3-cli-alpine AS artisan
+
+WORKDIR /app
+
+RUN apk add --no-cache \
+    bash \
+    git \
+    unzip \
+    libzip-dev
+
+COPY . .
+COPY --from=vendor /app/vendor ./vendor
+
+# 👇 aquí se generan las rutas/types de Wayfinder
+RUN php artisan wayfinder:generate --with-form
+
+
+# =========================
+# 3. FRONTEND (NODE + VITE)
 # =========================
 FROM node:20-alpine AS frontend
 
@@ -28,10 +49,14 @@ RUN npm ci
 
 COPY . .
 
+# 👇 usamos lo generado por PHP CLI
+COPY --from=artisan /app/resources/js/routes ./resources/js/routes
+
 RUN npm run build
 
+
 # =========================
-# 3. APP FINAL (PHP-FPM)
+# 4. RUNTIME FINAL (PHP-FPM)
 # =========================
 FROM php:8.3-fpm-alpine
 
@@ -66,13 +91,19 @@ RUN { \
     echo "opcache.jit=tracing"; \
 } > /usr/local/etc/php/conf.d/opcache.ini
 
-# App
+
+# =========================
+# APP
+# =========================
 COPY . .
 
 # vendor
 COPY --from=vendor /app/vendor ./vendor
 
-# build de Vite
+# rutas generadas por Wayfinder
+COPY --from=artisan /app/resources/js/routes ./resources/js/routes
+
+# build frontend
 COPY --from=frontend /app/public/build ./public/build
 
 RUN chown -R www-data:www-data /var/www/html \
