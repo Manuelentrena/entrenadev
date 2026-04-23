@@ -54,6 +54,7 @@ FROM php:8.4-fpm-alpine
 WORKDIR /var/www/html
 
 RUN apk add --no-cache \
+    nginx \
     bash \
     git \
     unzip \
@@ -91,11 +92,13 @@ COPY . .
 COPY --from=vendor /app/vendor ./vendor
 COPY --from=build /app/resources/js/routes ./resources/js/routes
 COPY --from=build /app/public/build ./public/build
+# Config Nginx
+COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
 
-EXPOSE 9000
+EXPOSE 8080
 
-CMD ["php-fpm"]
+CMD sh -c "php-fpm & nginx -g 'daemon off;'"
