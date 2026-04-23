@@ -56,8 +56,25 @@ jobs:
       # =========================
       # ENV
       # =========================
-      - name: Setup .env
-        run: cp .env.example .env
+      - name: Copy .env for CI
+        run: |
+          cat <<EOF > .env
+          APP_ENV=testing
+          APP_KEY=
+          APP_DEBUG=true
+          APP_URL=http://localhost
+
+          DB_CONNECTION=pgsql
+          DB_HOST=localhost
+          DB_PORT=5432
+          DB_DATABASE=testing
+          DB_USERNAME=postgres
+          DB_PASSWORD=postgres
+
+          SESSION_DRIVER=array
+          CACHE_STORE=array
+          QUEUE_CONNECTION=sync
+          EOF
 
       - name: Generate app key
         run: php artisan key:generate
