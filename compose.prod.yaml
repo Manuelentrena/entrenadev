@@ -1,0 +1,32 @@
+services:
+
+  app:
+    image: ghcr.io/manuelentrena/entrenadev:latest
+    container_name: laravel_app
+    restart: always
+    working_dir: /var/www/html
+    expose:
+      - "9000"
+    depends_on:
+      - pgsql
+    env_file:
+      - .env
+
+  pgsql:
+    image: postgres:16
+    container_name: laravel_db
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  dbdata:
