@@ -18,9 +18,9 @@ COPY . .
 
 
 # =========================
-# 2. PHP CLI (WAYFINDER GENERATION)
+# 2. FRONTEND (PHP + NODE + WAYFINDER)
 # =========================
-FROM php:8.4-cli-alpine AS artisan
+FROM php:8.4-cli-alpine AS frontend
 
 WORKDIR /app
 
@@ -28,37 +28,25 @@ RUN apk add --no-cache \
     bash \
     git \
     unzip \
+    nodejs \
+    npm \
     libzip-dev
 
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
 
-# 👇 aquí se generan las rutas/types de Wayfinder
+# Wayfinder
 RUN php artisan wayfinder:generate --with-form
 
-
-# =========================
-# 3. FRONTEND (NODE + VITE)
-# =========================
-FROM node:20-alpine AS frontend
-
-WORKDIR /app
-
-COPY package.json package-lock.json ./
+# Frontend build
 RUN npm ci
-
-COPY . .
-
-# 👇 usamos lo generado por PHP CLI
-COPY --from=artisan /app/resources/js/routes ./resources/js/routes
-
 RUN npm run build
 
 
 # =========================
-# 4. RUNTIME FINAL (PHP-FPM)
+# 3. RUNTIME FINAL (PHP-FPM)
 # =========================
-FROM php:8.3-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 WORKDIR /var/www/html
 
