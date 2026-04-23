@@ -22,7 +22,7 @@ FROM node:20-alpine AS frontend
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
@@ -79,11 +79,6 @@ COPY --from=frontend /app/public/build ./public/build
 # 🔐 Permisos correctos
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage bootstrap/cache
-
-# ⚡ Optimización Laravel (opcional en build)
-RUN php artisan config:cache || true \
-    && php artisan route:cache || true \
-    && php artisan view:cache || true
 
 EXPOSE 9000
 
