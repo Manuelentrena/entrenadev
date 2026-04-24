@@ -51,6 +51,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+          # 🔥 DESHABILITAR ATTESTATIONS (la solución)
+          provenance: false
+          sbom: false
+
           # ⚡ CACHE (clave)
           cache-from: type=gha
           cache-to: type=gha,mode=max
