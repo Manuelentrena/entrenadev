@@ -23,7 +23,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->configureDefaults();
+        // Forzar HTTPS en producción (cuando está detrás de proxy)
+        if (env('APP_ENV') === 'production') {
+            \URL::forceScheme('https');
+
+            // Confiar en los headers del proxy
+            $this->app['request']->server->set('HTTPS', 'on');
+        }
     }
 
     /**
