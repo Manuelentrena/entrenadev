@@ -19,9 +19,43 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e  # Detener en cualquier error
+
             cd /var/www/entrena.dev
 
-            docker compose pull
-            docker compose up -d
+            # Pull de nuevas imágenes
+            echo "📥 Pulling latest images..."
+            docker compose -f compose.prod.yaml pull
 
+            # Recrear contenedores con nueva imagen
+            echo "🔄 Recreating containers..."
+            docker compose -f compose.prod.yaml up -d --remove-orphans
+
+            # Esperar a que la base de datos esté saludable
+            echo "⏳ Waiting for database to be ready..."
+            until docker exec laravel_db pg_isready -U sail -d laravel; do
+              sleep 2
+            done
+
+            # Ejecutar migraciones
+            echo "🗄️  Running migrations..."
             docker exec laravel_app php artisan migrate --force
+
+            # Limpiar caché
+            echo "🧹 Clearing cache..."
+            docker exec laravel_app php artisan optimize:clear
+            docker exec laravel_app php artisan config:cache
+            docker exec laravel_app php artisan route:cache
+            docker exec laravel_app php artisan view:cache
+
+            # Recargar PHP-FPM (opcional)
+            docker exec laravel_app sh -c "kill -USR2 1" || true
+            echo "✅ Deployment completed successfully!"
+
+            # Verificar salud
+            sleep 5
+            if curl -f -s -o /dev/null http://localhost:8080; then
+              echo "🏥 Health check passed!"
+            else
+              echo "⚠️  Health check failed, but deployment continues"
+            fi
