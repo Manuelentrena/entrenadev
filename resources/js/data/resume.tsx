@@ -1,4 +1,4 @@
-import { HomeIcon, NotebookIcon } from 'lucide-react';
+import { NotebookIcon } from 'lucide-react';
 import { Icons } from '@/components/ui/icons';
 import { Csharp } from '@/components/ui/svgs/csharp';
 import { Docker } from '@/components/ui/svgs/docker';
@@ -40,7 +40,7 @@ export const DATA = {
         { name: 'C++', icon: Csharp },
     ],
     navbar: [
-        { href: '/', icon: HomeIcon, label: 'Home' },
+        { href: '/', icon: Icons.logome, label: 'Home' },
         { href: '/blog', icon: NotebookIcon, label: 'Blog' },
     ],
     contact: {
