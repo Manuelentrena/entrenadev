@@ -2,7 +2,7 @@
 title: '10 tips para optimizar imágenes Docker'
 summary: 'Reduce el tamaño de tus imágenes Docker, mejora tiempos de build y acelera despliegues con estas prácticas esenciales.'
 published_at: 2026-05-01
-cover_image: blog/covers/docker-optimization.webp
+cover_image: https://res.cloudinary.com/manuelentrena/image/upload/v1777830926/docker-optimization_r19xpl.webp
 ---
 
 Docker es una herramienta increíble para empaquetar aplicaciones, pero muchas veces terminamos con imágenes innecesariamente grandes, lentas de construir y difíciles de mantener.

@@ -129,7 +129,7 @@ export default function BlogShow({ post }: Props) {
                 {post.cover_image && (
                     <div className="mb-8 aspect-video w-full rounded-2xl border border-orange-500 object-cover dark:border-orange-900">
                         <img
-                            src={`/storage/${post.cover_image}`}
+                            src={post.cover_image}
                             alt={post.title}
                             loading="lazy"
                             className="w-full rounded-2xl border border-orange-300 object-cover dark:border-orange-900"
