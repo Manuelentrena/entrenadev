@@ -11,6 +11,8 @@ services:
       - pgsql
     env_file:
       - .env
+    volumes:
+      - laravel_storage:/var/www/html/storage
 
   pgsql:
     image: postgres:16-alpine
@@ -30,3 +32,4 @@ services:
 
 volumes:
   dbdata:
+  laravel_storage:
