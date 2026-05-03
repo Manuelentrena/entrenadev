@@ -41,6 +41,10 @@ jobs:
             echo "🗄️  Running migrations..."
             docker exec laravel_app php artisan migrate --force
 
+            # Crear symlink de storage
+            echo "🔗 Creating storage symlink..."
+            docker exec laravel_app php artisan storage:link || true
+
             # Limpiar caché
             echo "🧹 Clearing cache..."
             docker exec laravel_app php artisan optimize:clear
