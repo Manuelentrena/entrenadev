@@ -6,6 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import PortfolioLayout from '@/layouts/portfolio-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import 'prismjs/themes/prism-tomorrow.css';
 
 import '../css/app.css';
 
@@ -16,6 +17,8 @@ createInertiaApp({
     layout: (name) => {
         switch (true) {
             case name === 'home':
+                return PortfolioLayout;
+            case name === 'blog/index' || name === 'blog/show':
                 return PortfolioLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;

@@ -28,7 +28,7 @@ export default function Home() {
                                 text={`Hi, I'm ${DATA.name.split(' ')[0]}`}
                             />
                             <BlurFadeText
-                                className="max-w-[600px] text-muted-foreground md:text-lg lg:text-xl"
+                                className="max-w-150 text-muted-foreground md:text-lg lg:text-xl"
                                 delay={BLUR_FADE_DELAY}
                                 text={DATA.description}
                             />
