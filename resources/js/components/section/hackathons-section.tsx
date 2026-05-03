@@ -15,7 +15,7 @@ export default function HackathonsSection() {
                 {/* HEADER */}
                 <div className="flex flex-col items-center justify-center gap-y-4">
                     <div className="flex w-full items-center">
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-orange-500/30 to-transparent" />
+                        <div className="h-px flex-1 bg-linear-to-r from-transparent via-orange-500/30 to-transparent" />
 
                         <div className="z-10 rounded-xl border bg-orange-400 px-4 py-1 text-white dark:bg-orange-200 dark:text-black">
                             <span className="text-sm font-medium">
@@ -23,7 +23,7 @@ export default function HackathonsSection() {
                             </span>
                         </div>
 
-                        <div className="h-px flex-1 bg-gradient-to-r from-transparent via-orange-500/30 to-transparent" />
+                        <div className="h-px flex-1 bg-linear-to-r from-transparent via-orange-500/30 to-transparent" />
                     </div>
 
                     <div className="flex flex-col items-center justify-center gap-y-3 text-center">
@@ -87,7 +87,7 @@ export default function HackathonsSection() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
-                                                <Badge className="flex items-center gap-1.5 border-orange-500 bg-orange-200 bg-primary text-xs text-orange-500 text-primary-foreground hover:bg-orange-300/90 dark:bg-orange-200 dark:text-black hover:dark:bg-orange-300/90">
+                                                <Badge className="flex items-center gap-1.5 border-orange-500 bg-orange-200 text-xs text-orange-500 hover:bg-orange-300/90 dark:bg-orange-200 dark:text-black hover:dark:bg-orange-300/90">
                                                     {link.icon}
                                                     {link.title}
                                                 </Badge>
