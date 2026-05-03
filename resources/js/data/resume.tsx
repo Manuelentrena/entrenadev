@@ -46,6 +46,7 @@ export const DATA = {
     contact: {
         email: 'manuel.entrena@gmail.com',
         tel: '+34618981259',
+        image: '/footer.png',
         social: {
             GitHub: {
                 name: 'GitHub',
