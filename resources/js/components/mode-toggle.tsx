@@ -11,7 +11,7 @@ export function ModeToggle({ className }: { className?: string }) {
             type="button"
             variant="link"
             size="icon"
-            className={cn(className)}
+            className={cn('text-orange-500 hover:text-orange-500', className)}
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         >
             <SunIcon className="h-full w-full" />
