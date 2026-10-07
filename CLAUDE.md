@@ -23,7 +23,11 @@ This repo ships Laravel Boost (MCP server + guideline skills). Boost's own guide
 - Type check: `npm run types:check`
 - Build: `npm run build` (needed after frontend changes if not running `npm run dev`/`composer run dev` — Inertia will throw a Vite manifest error otherwise)
 
-**CI parity**: `npm run ci:check` runs lint:check + format:check + types:check + tests — mirrors `.github/workflows/ci.yml`.
+**CI parity**: `composer run ci:check` runs lint:check (Pint) + npm lint:check + format:check + types:check + tests — mirrors `.github/workflows/ci.yml`.
+
+## Spec workflow
+
+This repo uses the `/spec` and `/spec-impl` skills (`.claude/skills/spec*`) for larger features: `/spec` turns a description into a numbered file in `specs/` through a guided Q&A, `/spec-impl NN-slug` implements an `Approved` spec step by step on its own branch. Skip them for small, obvious changes.
 
 ## Architecture
 
@@ -37,6 +41,6 @@ This repo ships Laravel Boost (MCP server + guideline skills). Boost's own guide
 
 **Inertia request plumbing**: `HandleInertiaRequests` middleware shares global props (auth user, flash, etc.) to every page; `HandleAppearance` persists the light/dark/system appearance cookie server-side so SSR/first paint matches the client theme (paired with `use-appearance.tsx` on the frontend).
 
-**DB**: SQLite locally (`database/database.sqlite`), Postgres in CI and production (see `compose.yaml` / `compose.prod.yaml`). Only `users`/`cache`/`jobs` tables exist — most content on the site (blog) deliberately bypasses the DB.
+**DB**: Postgres everywhere — local dev via Sail's `compose.yaml` (service `pgsql`), CI spins up a `postgres:16` service container, production via `compose.prod.yaml`. `config/database.php` falls back to SQLite if `DB_CONNECTION` is unset, but the checked-in `.env.example` and this repo's actual local setup both point at Postgres; `database/database.sqlite` is a leftover, not the active store. Only `users`/`cache`/`jobs` (plus their Laravel-standard companion tables — sessions, password reset tokens, failed/batched jobs) exist — most content on the site (blog) deliberately bypasses the DB.
 
 **Deployment**: Docker image built by `.github/workflows/docker.yml` on CI success, then `.github/workflows/deploy.yml` SSHes into the VPS and runs `docker compose -f compose.prod.yaml up -d` plus migrations — not Laravel Cloud, despite what Boost's generic guidance suggests.
