@@ -24,7 +24,8 @@ export const DATA = {
         'Software engineer who loves building things, clean code, and great systems. Honors in Artificial Intelligence at university.',
     summary:
         'I have [over 6 years of experience](/#education) building web applications with [Typescript](/#skills) 💙, [React](/#skills) ⚛️, [PHP](/#skills) 🐘, [Laravel](/#skills) ❤️ and [Nest.js](/#skills) 🦁. I’ve [led full stack projects](/#projects) 🚀, working with Scrum 🧑‍💻, automated testing 🧪, CI/CD with [GitHub Actions](/#skills) 🔄, and [Docker 🐳](/#skills). I’m currently [studying LLMs, embeddings, RAG and agentic programming](/#education) 🤖. Outside of tech, I’m passionate about music 🎶 and creativity 🎸. I have an [intermediate English level (B1 Cambridge)](/#education) 🇬🇧 and I’m improving it every day ([2000+ Duolingo days](https://www.duolingo.com/profile/Manuel_Entrena) 🦉).',
-    avatarUrl: '/me.png',
+    avatarUrl:
+        'https://res.cloudinary.com/manuelentrena/image/upload/v1791382230/GitHub%20Perfil/avatar_uu8i4p.jpg',
     skills: [
         { name: 'Laravel', icon: Laravel },
         { name: 'Php', icon: Php },
