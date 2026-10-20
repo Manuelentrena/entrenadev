@@ -213,31 +213,28 @@ export const DATA = {
     ],
     projects: [
         {
-            title: 'Duellum',
-            href: 'https://duellum.online/login',
-            dates: 'Jun 2025 - Present',
-            active: true,
+            title: 'Arcade Vault',
+            href: 'https://arcade-vault-chi.vercel.app/',
+            dates: 'Aug 2026 - Sep 2026',
+            active: false,
             description:
-                'Duellum is a fast-paced online strategy game where players battle in tactical duels, and compete for dominance in dynamic PvP matches. Outsmart your opponents, adapt your strategy, and climb the competitive arena.',
-            technologies: [
-                'Nest.js',
-                'Typescript',
-                'React',
-                'PostgreSQL',
-                'TailwindCSS',
-                '8bitcn',
-                'Docker',
-                'GitHub Actions',
-            ],
+                'Arcade Vault is a retro arcade platform where players compete across 5 games for high scores. Real accounts, leaderboards, a hall of fame, and personal-best tracking, backed by a landing page, a game library, a guest play option, and a contact form.',
+            technologies: ['Next.js', 'React', 'Typescript', 'Supabase', 'Vercel'],
             links: [
                 {
                     type: 'Website',
-                    href: 'https://duellum.online/login',
+                    href: 'https://arcade-vault-chi.vercel.app/',
                     icon: <Icons.globe className="size-3" />,
                 },
+                {
+                    type: 'Source',
+                    href: 'https://github.com/Manuelentrena/arcade-vault',
+                    icon: <Icons.github className="size-3" />,
+                },
             ],
-            image: 'https://imagedelivery.net/vkH-_KAmKeWBBVeCxTyWtQ/293e396b-8cf1-47db-2115-11b2b5e3c000/public',
-            video: 'https://res.cloudinary.com/manuelentrena/video/upload/v1777566359/duellum_a0jqii.mp4',
+            image: '',
+            video: 'https://res.cloudinary.com/manuelentrena/video/upload/v1792493598/arcade_vault_my647u.mp4',
+            builtWithClaude: true,
         },
         {
             title: 'Carlos Arte - Personal Brand',
@@ -270,6 +267,7 @@ export const DATA = {
             ],
             image: '',
             video: 'https://res.cloudinary.com/manuelentrena/video/upload/v1777566347/carlos_kyqzml.mp4',
+            builtWithClaude: false,
         },
     ],
     hackathons: [
