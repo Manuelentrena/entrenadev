@@ -3,6 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { useState } from 'react';
 import Markdown from 'react-markdown';
 import { Badge } from '@/components/ui/badge';
+import { Icons } from '@/components/ui/icons';
 import { cn } from '@/lib/utils';
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
@@ -36,6 +37,7 @@ interface Props {
         type: string;
         href: string;
     }[];
+    builtWithClaude?: boolean;
     className?: string;
 }
 
@@ -48,6 +50,7 @@ export function ProjectCard({
     image,
     video,
     links,
+    builtWithClaude,
     className,
 }: Props) {
     return (
@@ -77,9 +80,9 @@ export function ProjectCard({
                 </Link>
 
                 {/* LINKS BADGES */}
-                {links && links.length > 0 && (
-                    <div className="absolute top-2 right-2 flex flex-wrap gap-2">
-                        {links.map((l, idx) => (
+                {((links && links.length > 0) || builtWithClaude) && (
+                    <div className="absolute top-2 right-2 flex flex-wrap items-center gap-2">
+                        {links?.map((l, idx) => (
                             <a
                                 href={l.href}
                                 key={idx}
@@ -93,6 +96,14 @@ export function ProjectCard({
                                 </Badge>
                             </a>
                         ))}
+                        {builtWithClaude && (
+                            <Badge
+                                title="Made with Claude"
+                                className="flex h-5 items-center gap-1.5 bg-orange-400 text-xs text-white hover:bg-orange-600/90 dark:bg-orange-200 dark:text-black hover:dark:bg-orange-300/90"
+                            >
+                                <Icons.claude className="size-3 dark:text-[#D97757]" />
+                            </Badge>
+                        )}
                     </div>
                 )}
             </div>
